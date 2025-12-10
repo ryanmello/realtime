@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function formatTimeRemaining(seconds: number) {
   const mins = Math.floor(seconds / 60);
@@ -15,6 +15,9 @@ export default function Room() {
 
   const [copyStatus, setCopyStatus] = useState("Copy");
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [input, setInput] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const copyLink = () => {
     const url = window.location.href;
@@ -74,9 +77,21 @@ export default function Room() {
             <input
               autoFocus
               type="text"
+              value={input}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && input.trim()) {
+                  // todo: send to backend
+                  inputRef.current?.focus();
+                }
+              }}
+              placeholder="Type message..."
+              onChange={(e) => setInput(e.target.value)}
               className="w-full bg-black border border-zinc-800 focus:border-zinc-700 focus:outline-none transition-colors text-zinc-100 placeholder:text-zinc-700 py-3 pl-8 pr-4 text-sm"
-            ></input>
+            />
           </div>
+          <button className="bg-zinc-800 text-zinc-400 px-6 text-sm font-bold hover:text-zinc-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+            SEND
+          </button>
         </div>
       </div>
     </main>
