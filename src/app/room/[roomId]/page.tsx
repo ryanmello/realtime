@@ -3,16 +3,24 @@
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+function formatTimeRemaining(seconds: number) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
+
 export default function Room() {
   const { roomId } = useParams();
 
-  const [copyStatus, setCopyStatus] = useState("Copy")
+  const [copyStatus, setCopyStatus] = useState("Copy");
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
 
   const copyLink = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url);
-    setCopyStatus("Copied")
-    setTimeout(() => setCopyStatus("Copy"), 2000)
+    setCopyStatus("Copied");
+    setTimeout(() => setCopyStatus("Copy"), 2000);
   };
 
   return (
@@ -30,6 +38,25 @@ export default function Room() {
                 {copyStatus}
               </button>
             </div>
+          </div>
+
+          <div className="h-8 w-px bg-zinc-800" />
+
+          <div className="flex flex-col">
+            <span className="text-xs text-zinc-500 uppercase">
+              Self destruct
+            </span>
+            <span
+              className={`text-sm font-bold flex items-center gap-2 ${
+                timeRemaining !== null && timeRemaining < 60
+                  ? "text-red-600"
+                  : "text-amber-500"
+              }`}
+            >
+              {timeRemaining !== null
+                ? formatTimeRemaining(timeRemaining)
+                : "--:--"}
+            </span>
           </div>
         </div>
       </header>
