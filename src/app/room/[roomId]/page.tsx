@@ -1,13 +1,18 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function Room() {
   const { roomId } = useParams();
 
+  const [copyStatus, setCopyStatus] = useState("Copy")
+
   const copyLink = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url);
+    setCopyStatus("Copied")
+    setTimeout(() => setCopyStatus("Copy"), 2000)
   };
 
   return (
@@ -22,7 +27,7 @@ export default function Room() {
                 onClick={copyLink}
                 className="text-[10px] bg-zinc-800 hover:bg-zinc-700 px-2 py-0.5 rounded text-zinc-400 hover:text-zinc-200 transition-colors"
               >
-                Copy
+                {copyStatus}
               </button>
             </div>
           </div>
