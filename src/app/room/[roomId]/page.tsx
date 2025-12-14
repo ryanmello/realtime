@@ -5,6 +5,11 @@ import { useParams } from "next/navigation";
 export default function Room() {
   const { roomId } = useParams();
 
+  const copyLink = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+  };
+
   return (
     <main className="flex flex-col h-screen max-h-screen overflow-hidden">
       <header className="border-b border-zinc-800 p-4 flex items-center justify-between bg-zinc-900/30">
@@ -13,7 +18,10 @@ export default function Room() {
             <span className="text-xs text-zinc-500 uppercase">Room Id:</span>
             <div className="flex items-center gap-2">
               <span className="font-bold text-green-500">{roomId}</span>
-              <button className="text-[10px] bg-zinc-800 hover:bg-zinc-700 px-2 py-0.5 rounded text-zinc-400 hover:text-zinc-200 transition-colors">
+              <button
+                onClick={copyLink}
+                className="text-[10px] bg-zinc-800 hover:bg-zinc-700 px-2 py-0.5 rounded text-zinc-400 hover:text-zinc-200 transition-colors"
+              >
                 Copy
               </button>
             </div>
